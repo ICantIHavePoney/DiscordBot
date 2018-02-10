@@ -1,5 +1,7 @@
 {
-   "token": "NDEwMzk3MzQ2MjcxMTk5MjQz.DVsj9w.tGdg8J49JBuKCOoNv7JmhfprCXQ",
-   "prefix" : "!",
-   "specialRoles" : []
+    "token": "MzkyOTY3MDk2NzA0ODI3Mzkz.DV0Xgw.GSSCMWFwSvePNclg_BiJTGc5DqU",
+    "prefix" : "!",
+    "adminRole" : "Bot Admin",
+    "gameMasterRole" : "Maitre du jeu",
+    "logChannel" : "bot_log"
 }
