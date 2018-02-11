@@ -20,14 +20,16 @@ client.on("message", (message) => {
 
     try{
       let commandFile = require("./Commands/"+ command + ".js");
-      if(CanRun(commandFile, message)){
+      if(!commandFile.accessLevel || CanRun(commandFile, message)){
         commandFile.run(client, message, args);
       }
-
+      if(commandFile.needHiding){
+        message.delete(100);
+      } 
     }catch (err){
       console.error(err);
     }
-    message.delete(100);
+
 
   });
 
@@ -61,9 +63,9 @@ function CanRun(commandFile, message){
       else{
         message.author.send("You don't have the right to use this !");
         return false;
-      }        
+      }
       break;
-    case config.gameMasterRole : 
+    case config.gameMasterRole :
       if(message.member.roles.has(gameMasterRole.id) || message.member.roles.has(adminRole.id)){
         return true;
       }
@@ -73,7 +75,6 @@ function CanRun(commandFile, message){
       }
       break;
   }
-  return true;
 }
 
 client.login(config.token);

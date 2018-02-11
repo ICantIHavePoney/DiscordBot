@@ -4,6 +4,9 @@ let config = require("../config.json");
 
 exports.accessLevel = config.adminRole;
 
+
+exports.needHiding = true;
+
 exports.run = (client, message, args) =>{
 
   logChannel = message.guild.channels.find("name", config.logChannel);
