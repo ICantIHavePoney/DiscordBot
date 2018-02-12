@@ -1,25 +1,31 @@
-const fs = require("fs");
+let Command = require("./Command.js");
+let fs = require("fs");
 
-let config = require("../config.json");
+class reload extends Command{
 
-exports.accessLevel = config.adminRole;
+    run(message, args) {
 
-exports.needHiding = true;
+      let logChannel = message.guild.channels.find("name", this.bot.config.logChannel);
+      if(!logChannel){
+        logChannel = message.channel;
+      }
+      this.bot.commands = {};
 
-exports.run = (client, message, args) =>{
+      fs.readdir("./Commands/", (err, files) => {
+        if(err) return console.error(err);
 
-  logChannel = message.guild.channels.find("name", config.logChannel);
-  if(!logChannel){
-    logChannel = message.channel;
+        files.forEach(file =>{
+
+          delete require.cache[require.resolve("./"+ file)];
+        });
+      });
+
+
+      this.bot.registerCommands();
+
+      console.log("Les commandes ont été rafraichies");
+      logChannel.send("Les commandes ont été rafraichies")
+    }
   }
 
-    fs.readdir("./Commands/", (err, files) => {
-      if(err) return console.error(err);
-
-      files.forEach(file =>{
-        delete require.cache[require.resolve("./"+ file)];
-      });
-    });
-    console.log("Les commandes ont été rafraichies");
-    logChannel.send("Les commandes ont été rafraichies")
-}
+module.exports = reload;

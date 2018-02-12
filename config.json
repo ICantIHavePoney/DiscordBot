@@ -5,17 +5,15 @@
     "gameMasterRole" : "Maitre du jeu",
     "logChannel" : "bot_log",
 
-    "Commands" : [
-        {
-            "name" : "ping",
-            "AccessLevel" : 3,
+    "commands" :{
+        "ping" : {
+            "accessLevel" : 3,
             "needHiding" : false
-        },
-        {
-            "name" : "reload",
-            "AccessLevel" : 1,
-            "needHiding" : true
+          },
+        "reload" : {
+          "accessLevel" : 3,
+          "needHiding" : true
         }
-    ]
-    
+    }
+
 }

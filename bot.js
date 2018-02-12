@@ -13,16 +13,14 @@ class Bot{
       this.registerCommands();
       this.loadClientEvents();
       this.loginClient();
- 
+
     }
 
     registerCommands(){
       let commandClass, commandName;
-      let configCommands = this.config.Commands
-      for (commandName in this.config.Commands) {
-
-          commandClass = require("./Commands/"+ configCommands[commandName].name + ".js");
-          console.log(configCommands);
+      let configCommands = this.config.commands;
+      for (commandName in this.config.commands) {
+          commandClass = require("./Commands/"+ commandName + ".js");
           this.commands[commandName] = new commandClass(configCommands[commandName], this);
       }
     }
@@ -41,13 +39,13 @@ class Bot{
 
       try{
         let commandFile = this.commands[command];
-        console.log(this.commands);
-        /*if(commandFile.accessLevel == enums.AccessLevel.All || canRun(commandFile, message, this.config)){
+        console.log(commandFile.config.accessLevel);
+        if(commandFile.config.accessLevel == enums.AccessLevel.All || canRun(commandFile, message, this.config)){
           commandFile.run(message, args);
         }
-        if(commandFile.needHiding){
+        if(commandFile.config.needHiding){
           message.delete(100);
-        } */
+        }
       }catch (err){
         console.error(err);
       }
