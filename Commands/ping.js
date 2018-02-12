@@ -1,7 +1,11 @@
+let Command = require("./Command.js");
 
-exports.needHiding = false;
 
-exports.run = (client, message, args) => {
-
-    message.channel.send("pong!").catch(console.error);
+class ping extends Command{
+    run(client, message, args) {
+        message.channel.send("pong!").catch(console.error);
+    }
 }
+
+
+module.exports = ping;

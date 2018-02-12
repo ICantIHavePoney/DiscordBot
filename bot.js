@@ -1,80 +1,65 @@
 let Discord = require("discord.js");
-let client = new Discord.Client();
+let canRun = require("./utils/CanRun.js");
+let enums = require("./Enums.js");
 
-let fs = require("fs");
+class Bot{
 
-let config = require("./config.json");
+    constructor(config){
+      this.client = new Discord.Client();
+      this.config = config;
 
-client.on("ready", () => {
-  console.log("I am ready!");
-});
+      this.commands = {};
 
-client.on("message", (message) => {
-  if(message.author.bot || message.content.indexOf(config.prefix) != 0) return;
-
-
-    let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-
-    let command = args.shift().toLowerCase();
-
-
-    try{
-      let commandFile = require("./Commands/"+ command + ".js");
-      if(!commandFile.accessLevel || CanRun(commandFile, message)){
-        commandFile.run(client, message, args);
-      }
-      if(commandFile.needHiding){
-        message.delete(100);
-      } 
-    }catch (err){
-      console.error(err);
+      this.registerCommands();
+      this.loadClientEvents();
+      this.loginClient();
+ 
     }
 
+    registerCommands(){
+      let commandClass, commandName;
+      let configCommands = this.config.Commands
+      for (commandName in this.config.Commands) {
 
-  });
-
-function CanRun(commandFile, message){
-
-  adminRole = message.guild.roles.find("name", config.adminRole);
-  gameMasterRole = message.guild.roles.find("name",config.gameMasterRole);
-  logChannel = message.guild.channels.find("name", config.logChannel);
-
-  if(!logChannel){
-    message.guild.createChannel(config.logChannel, "text");
-    logChannel = message.channel;
-    logChannel.send("You didn't have a log channel, so I created one for ya !");
-  }
-
-  if(commandFile.accessLevel == config.adminRole && !adminRole){
-    logChannel.send("The admin role doesn't exist, so you can't use admin commands");
-    return false;
-  }
-
-  if(commandFile.accessLevel == config.gameMasterRole && !gameMasterRole){
-    logChannel.send("The game master role doesn't exist, so you can't use game master commands");
-    return false;
-  }
-
-  switch(commandFile.accessLevel){
-    case config.adminRole:
-      if(message.member.roles.has(adminRole.id)){
-        return true;
+          commandClass = require("./Commands/"+ configCommands[commandName].name + ".js");
+          console.log(configCommands);
+          this.commands[commandName] = new commandClass(configCommands[commandName], this);
       }
-      else{
-        message.author.send("You don't have the right to use this !");
-        return false;
+    }
+
+    loadClientEvents(){
+      this.client.on("ready", this.sendReady.bind(this));
+      this.client.on("message", this.handleMessage.bind(this));
+    }
+
+    handleMessage(message){
+      if(message.author.bot || message.content.indexOf(this.config.prefix) != 0) return;
+
+      let args = message.content.slice(this.config.prefix.length).trim().split(/ +/g);
+
+      let command = args.shift().toLowerCase();
+
+      try{
+        let commandFile = this.commands[command];
+        console.log(this.commands);
+        /*if(commandFile.accessLevel == enums.AccessLevel.All || canRun(commandFile, message, this.config)){
+          commandFile.run(message, args);
+        }
+        if(commandFile.needHiding){
+          message.delete(100);
+        } */
+      }catch (err){
+        console.error(err);
       }
-      break;
-    case config.gameMasterRole :
-      if(message.member.roles.has(gameMasterRole.id) || message.member.roles.has(adminRole.id)){
-        return true;
-      }
-      else{
-        message.author.send("You don't have the right to use this !");
-        return false;
-      }
-      break;
-  }
+    }
+
+    sendReady(){
+      console.log("I am ready!");
+    }
+
+    loginClient(){
+      this.client.login(this.config.token);
+    }
 }
 
-client.login(config.token);
+module.exports = Bot;

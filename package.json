@@ -8,6 +8,7 @@
     "discord.io": "^2.5.3",
     "discord.js": "^11.3.0",
     "fs": "0.0.1-security",
+    "mongodb": "^3.0.2",
     "winston": "^2.4.0"
   }
 }

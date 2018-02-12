@@ -1,5 +1,5 @@
 let fs = require("fs");
-let config = require("./config.json");
+let config = require("../config.json");
 
 exports.needHiding = true;
 

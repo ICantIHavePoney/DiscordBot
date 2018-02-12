@@ -3,5 +3,19 @@
     "prefix" : "!",
     "adminRole" : "Bot Admin",
     "gameMasterRole" : "Maitre du jeu",
-    "logChannel" : "bot_log"
+    "logChannel" : "bot_log",
+
+    "Commands" : [
+        {
+            "name" : "ping",
+            "AccessLevel" : 3,
+            "needHiding" : false
+        },
+        {
+            "name" : "reload",
+            "AccessLevel" : 1,
+            "needHiding" : true
+        }
+    ]
+    
 }
