@@ -5,16 +5,25 @@ let mongoClient = require("mongodb").MongoClient;
 let chalk = require("chalk");
 
 let okay = chalk.bold.greenBright;
+let warning = chalk.bold.orange;
 
 class Bot{
 
     constructor(config){
       this.loadConfigurations(config)
       .then(this.connectExternal)
-      .then(this.registerCommands)
+      .then(this.registerCommands.bind(this))
       .then(()=>{
-        console.log("       Systèmes : [" + okay("OK") + "]");
-        console.log("Base de données : [" + okay("OK") + "]");
+        console.log("               Systèmes : [" + okay("OK") + "]");
+        console.log("     Connexions réseaux : [" + okay("OK") + "]");
+        console.log("        Base de données : [" + okay("OK") + "]");
+        console.log("Commandes utitlisateurs : [" + okay("OK") + "]");
+        console.log("Evenements utilisateurs : [" + okay("OK") + "]");
+        console.log(" Configuration initiale : [" + okay("terminée") + "]");
+        console.log("  Séquence de démarrage : [" + okay("terminée") + "]");
+        console.log(okay("SYSTEME DE GESTION URBAINE ET CIVILE ETHYA EN LIGNE"));
+        console.log("Bonjour ! En quoi puis je vous aider aujourd'hui ?");        
+        
       });
 
 
@@ -23,10 +32,8 @@ class Bot{
 
     loadConfigurations(config){
       let bot = this;
-      console.log("this : " + JSON.stringify(this));
       return new Promise((resolve, reject) => {
         console.log("Chargement des fichiers de configurations");
-
         bot.config = config;
         resolve(bot);
       });
@@ -46,25 +53,24 @@ class Bot{
 
     }
 
-    registerCommands(bot){
+    registerCommands(){ 
+
       console.log("Enregistrement des commandes utilisateurs");
+      let bot = this;
       let promises = [];
       bot.commands = {};
-      
-      console.log(bot.config);
-
       let commandClass, commandName;
     
-      /*for (commandName in bot.config.commands) {
+      for (commandName in bot.config.commands) {
           commandClass = require("./Commands/"+ commandName + ".js");
 
           bot.commands[commandName] = new commandClass(bot.config.commands[commandName], bot);
-          promises.push(bot.commands[commandName].initialized.then(() =>{
-            console.log(commandName);
+          promises.push(bot.commands[commandName].initialised.then((command) =>{
+            console.log(command.constructor.name);
           }));
       }
-      return Promise.all(promises);*/
-    }
+      return Promise.all(promises);
+  }   
 
     connectDatabase(bot){
       console.log("Connexion à la base de donnée");
@@ -75,6 +81,7 @@ class Bot{
             reject();
             return console.log(error);
           }         
+          bot.dataBase = db;
           console.log("Connexion à la base de donnée établie");
           resolve(bot);
         });

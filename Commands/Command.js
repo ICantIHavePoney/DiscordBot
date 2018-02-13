@@ -5,11 +5,13 @@ class Command{
     constructor(config, bot){
         this.config = config;
         this.bot = bot;
+        this.initialise();
     }
 
     initialise(){
         this.initialised = new Promise((resolve, reject) =>{
-            resolve();
+            let command = this;
+            resolve(command);
         })
     }
 
