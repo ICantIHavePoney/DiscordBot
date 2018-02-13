@@ -5,10 +5,12 @@
   "main": "bot.js",
   "author": "YOUR-NAME-HERE",
   "dependencies": {
+    "chalk": "^2.3.1",
     "discord.io": "^2.5.3",
     "discord.js": "^11.3.0",
     "fs": "0.0.1-security",
     "mongodb": "^3.0.2",
+    "promise": "^8.0.1",
     "winston": "^2.4.0"
   }
 }

@@ -5,6 +5,8 @@
     "gameMasterRole" : "Maitre du jeu",
     "logChannel" : "bot_log",
 
+    "DbUrl" : "mongodb://localhost/ethya", 
+
     "commands" :{
         "ping" : {
             "accessLevel" : 3,

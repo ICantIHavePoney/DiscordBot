@@ -19,7 +19,6 @@ exports.run = (client, message, args)=>{
   logChannel.send("Tous les dossiers ont été créés !");
 }
 
-
 function CreateFolder(member){
   fs.stat("./Datas/" + member.user.username, (error) => {
     if(error && error.code == "ENOENT"){

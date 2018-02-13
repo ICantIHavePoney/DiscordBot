@@ -6,6 +6,14 @@ class Command{
         this.config = config;
         this.bot = bot;
     }
+
+    initialise(){
+        this.initialised = new Promise((resolve, reject) =>{
+            resolve();
+        })
+    }
+
 }
+
 
 module.exports = Command;
