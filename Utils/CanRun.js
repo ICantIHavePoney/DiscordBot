@@ -9,26 +9,26 @@ function CanRun(commandFile, message, config){
   if(!logChannel){
     message.guild.createChannel(config.logChannel, "text");
     logChannel = message.channel;
-    logChannel.send("You didn't have a log channel, so I created one for ya !");
+    logChannel.send("Le canaux de logs n'existe pas, je vous en crée un!");
   }
 
   if(commandFile.accessLevel == config.adminRole && !adminRole){
-    logChannel.send("The admin role doesn't exist, so you can't use admin commands");
+    logChannel.send("Le rôle d'administrateur n'existe pas ! Vous ne pouvez pas utiliser les commandes admins !");
     return false;
   }
 
   if(commandFile.accessLevel == config.gameMasterRole && !gameMasterRole){
-    logChannel.send("The game master role doesn't exist, so you can't use game master commands");
+    logChannel.send("Le rôle de maitre de jeu n'existe pas ! Vous ne pouvez pas utiliser les commandes maitre de jeu !");
     return false;
   }
 
-  switch(commandFile.accessLevel){
+  switch(commandFile.config.accessLevel){
     case enums.AccessLevel.Admin:
       if(message.member.roles.has(adminRole.id)){
         return true;
       }
       else{
-        message.author.send("You don't have the right to use this !");
+        message.author.send("Vous n'avez pas le droit d'utiliser cette commande !");
         return false;
       }
       break;
@@ -37,12 +37,11 @@ function CanRun(commandFile, message, config){
         return true;
       }
       else{
-        message.author.send("You don't have the right to use this !");
+        message.author.send("Vous n'avez pas le droit d'utiliser cette commande !");
         return false;
       }
       break;
   }
 }
-
 
 module.exports = CanRun;

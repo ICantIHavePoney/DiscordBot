@@ -66,7 +66,7 @@ class Bot{
 
           bot.commands[commandName] = new commandClass(bot.config.commands[commandName], bot);
           promises.push(bot.commands[commandName].initialised.then((command) =>{
-            console.log(command.constructor.name);
+            console.log("Enregistrement commande " + command.constructor.name + " : [" + okay("OK") + "]");
           }));
       }
       return Promise.all(promises);
@@ -81,7 +81,7 @@ class Bot{
             reject();
             return console.log(error);
           }         
-          bot.dataBase = db;
+          bot.dataBase = db.db("Ethya");
           console.log("Connexion à la base de donnée établie");
           resolve(bot);
         });
@@ -112,7 +112,6 @@ class Bot{
 
       try{
         let commandFile = this.commands[command];
-        console.log(commandFile.config.accessLevel);
         if(commandFile.config.accessLevel == enums.AccessLevel.All || canRun(commandFile, message, this.config)){
           commandFile.run(message, args);
         }
@@ -122,10 +121,6 @@ class Bot{
       }catch (err){
         console.error(err);
       }
-    }
-
-    sendReady(){
-      console.log("I am ready!");
     }
 
     loginClient(bot){

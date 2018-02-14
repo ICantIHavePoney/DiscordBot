@@ -1,5 +1,5 @@
 {
-    "token": "<TOKEN>",
+    "token": "MzkyOTY3MDk2NzA0ODI3Mzkz.DV0Xgw.GSSCMWFwSvePNclg_BiJTGc5DqU",
     "prefix" : "!",
     "adminRole" : "Bot Admin",
     "gameMasterRole" : "Maitre du jeu",
@@ -13,9 +13,12 @@
             "needHiding" : false
           },
         "reload" : {
-          "accessLevel" : 3,
-          "needHiding" : true
+            "accessLevel" : 1,
+            "needHiding" : true
+        },
+        "createcharacter" : {
+            "accessLevel" : 3,
+            "needHiding" : true
         }
     }
-
 }
