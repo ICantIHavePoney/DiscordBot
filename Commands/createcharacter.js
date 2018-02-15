@@ -1,4 +1,6 @@
 let Command = require("./Command.js");
+let Character = require("./Character.js");
+
 
 
 class createcharacter extends Command{
@@ -15,56 +17,24 @@ class createcharacter extends Command{
       return;
     }
 
-    let playerSampleDatas = {
-      "Joueur" : message.author,
-      "Nom" : args[0],
-      "Prenom" : args[1],
-      "Argent" : "",
-      "Jeton de l'Eris" : "",
-      "Hangar" : [],
-      "Pilotage" : {
-        "Petits Vaisseaux" : 0,
-        "Grand Vaisseaux" : 0
-      },
-      "Générales" : {
-        "Exploration": 0,
-        "Architecture": 0,
-        "Militaire": 0,
-        "Minage": 0
-      },
-      "Chantier" : {
-        "Construction": 0,
-        "Electricité": 0,
-        "Maintenance": 0,
-        "Armement": 0
-      },
-      "autre" : {
-        "Culture": 0,
-        "Holothèque lues": ""
-      }
-    }
+    let playerDatas = new Character(message.author.username, args[0], args[1]);
 
-    //console.log(this.bot.dataBase.collection("Characters"));
+    let collection = this.bot.dataBase.collection("Characters");
 
-    this.bot.dataBase.collection("Characters").find({"Nom" : playerSampleDatas.Nom, "Prénom" : playerSampleDatas.Prenom}, (error, result) =>{
-      if(error) return console.log(error);
-      console.log(result);
-      /*if(!result){
-        this.bot.dataBase.collection("Characters").insert(playerSampleDatas, null, (error, results) => {
-          if(error) return console.log(error);
-          console.log("Elément inséré");
+    collection.find({"firstName" : args[0], "lastName" : args[1]}).toArray((err, items) =>{
+      if(err){
+        return console.error(err);
+    } 
+    if(items.length == 0){
+        collection.insert(playerDatas, null, (error, results)=>{
+            if(error){
+                return console.log(error);
+            }
+            console.log("élément inséré");
         });
-      }
-      else{
-        console.log("toto");
-      }*/
-    });
-
-    //console.log(playerSampleDatas);
+    }
+    })
   }
 }
-
-
-
 
 module.exports = createcharacter
